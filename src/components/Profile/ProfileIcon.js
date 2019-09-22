@@ -20,7 +20,6 @@ class ProfileIcon extends Component {
     }))
   }
   render() {
-    console.log(this.state.dropdownOpen)
     return (
       <div className="pa4 tc">
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -34,14 +33,13 @@ class ProfileIcon extends Component {
               className="br-100 ba h3 w3 dib" alt="avatar"
             />
         </DropdownToggle>
-          <DropdownMenu
-            className="b--transparent shadow-5"
-            style={{marginTop: '20px', backgroundColor: 'rgba(255, 255, 255, 0.5)'}}
-          >
-            <DropdownItem>Profile</DropdownItem>
-            <DropdownItem>Sign out</DropdownItem>
-            <DropdownItem disabled>More cool stuff (comming soon´)</DropdownItem>
-          </DropdownMenu>
+        <DropdownMenu
+          className="b--transparent shadow-5"
+          style={{marginTop: '20px', backgroundColor: 'rgba(255, 255, 255, 0.5)'}}
+        >
+          <DropdownItem onClick={this.props.toggleModal}>View Profile</DropdownItem>
+          <DropdownItem onClick={() => this.props.onRouteChange('signout')}>Sign out</DropdownItem>
+        </DropdownMenu>
         </Dropdown>
       </div>
     );
