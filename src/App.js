@@ -27,7 +27,7 @@ const initialState = {
   input: '',
   imageUrl: '',
   boxes: [],
-  route: 'signing',
+  route: 'signin',
   isSignedIn: false,
   isProfileOpen: false,
   user: {
@@ -80,32 +80,32 @@ class App extends Component {
   }
 
   onButtonSubmit = () => {
-    this.setState({imageUrl: this.state.input});
-      fetch('http://localhost:3000/imageurl', {
-        method: 'post',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          input: this.state.input
-        })
+    this.setState({ imageUrl: this.state.input });
+    fetch('http://localhost:3000/imageurl', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        input: this.state.input
       })
+    })
       .then(response => response.json())
       .then(response => {
         if (response) {
           fetch('http://localhost:3000/image', {
             method: 'put',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               id: this.state.user.id
             })
           })
             .then(response => response.json())
             .then(count => {
-              this.setState(Object.assign(this.state.user, { entries: count}))
+              this.setState(Object.assign(this.state.user, { entries: count }))
             })
             .catch(console.log)
 
         }
-        this.displayFaceBoxes(this.calculateFaceLocations(response))
+        this.displayFaceBox(this.calculateFaceLocation(response))
       })
       .catch(err => console.log(err));
   }
@@ -123,11 +123,11 @@ class App extends Component {
     this.setState(prevState =>({
       ...prevState,
       isProfileOpen: !prevState.isProfileOpen,
-    }))
+    })) 
   }
 
   render() {
-    const { isSignedIn, imageUrl, route, boxes, isProfileOpen } = this.state;
+    const { isSignedIn, imageUrl, route, boxes, isProfileOpen, user } = this.state;
     return (
       <div className="App">
          <Particles className='particles'
@@ -140,7 +140,12 @@ class App extends Component {
         />
               {isProfileOpen &&
               <Modal >
-                <Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleModal}/>
+                <Profile
+                  isProfileOpen={isProfileOpen}
+                  toggleModal={this.toggleModal}
+                  loadUser={this.loadUser}
+                  user={user}
+                />
               </Modal> 
               }
         { route === 'home'

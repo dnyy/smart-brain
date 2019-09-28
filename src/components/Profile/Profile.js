@@ -2,10 +2,21 @@ import React, { useState } from 'react';
 
 import './Profile.css';
 
-const Profile = ({ isProfileOpen, toggleModal }) => {
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [pet, setPet] = useState('');
+const Profile = ({ isProfileOpen, toggleModal, user, loadUser }) => {
+  const [name, setName] = useState(user.name);
+  const [age, setAge] = useState(user.age);
+  const [pet, setPet] = useState(user.pet);
+
+  const onProfileUpdate = data => {
+    fetch(`http://localhost:3000/profile/${user.id}`, {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ formInput: data }),
+    }).then(resp => {
+      toggleModal();
+      loadUser({ ...user, ...data})
+    }).catch(console.log)
+  }
 
   return (
     <div className="profile-modal">
@@ -16,8 +27,8 @@ const Profile = ({ isProfileOpen, toggleModal }) => {
             className=" h3 w3 dib" alt="avatar"
           />
           <h1>{name}</h1>
-          <h4>Images submitted: 5</h4>
-          <p>Member since: May</p>
+          <h4>{`Images submitted: ${user.entries}`}</h4>
+          <p>{`Member since: ${new Date(user.joined)}`}</p>
           <hr/>
           <label className="mt2 fw6" htmlFor="user-name">Name:</label>
           <input
@@ -30,6 +41,7 @@ const Profile = ({ isProfileOpen, toggleModal }) => {
           />
           <label className="mt2 fw6" htmlFor="user-name">Age:</label>
           <input
+            // onChange={e => setAge(e.target.value)}
             className="pa2 ba w-100"
             placeholder={age}
             type="text"
@@ -38,6 +50,7 @@ const Profile = ({ isProfileOpen, toggleModal }) => {
           />
           <label className="mt2 fw6" htmlFor="user-name">Pet:</label>
           <input
+            // onChange={e => setPet(e.target.value)}
             className="pa2 ba w-100"
             placeholder={pet}
             type="text"
@@ -46,6 +59,7 @@ const Profile = ({ isProfileOpen, toggleModal }) => {
           />
           <div className="mt4" style={{display: 'flex', justifyContent: 'space-evenly'}}>
             <button
+            onClick={() => onProfileUpdate({name, age, pet})}
               className="b pa2 grow pointer hover-white w-40 bg-light-blue b--black-20"
             >
               Save
