@@ -48,7 +48,7 @@ const Profile = ({ isProfileOpen, toggleModal, user, loadUser }) => {
           />
           <label className="mt2 fw6" htmlFor="user-name">Age:</label>
           <input
-            // onChange={e => setAge(e.target.value)}
+            onChange={e => setAge(e.target.value)}
             className="pa2 ba w-100"
             placeholder={age}
             type="text"
@@ -57,7 +57,7 @@ const Profile = ({ isProfileOpen, toggleModal, user, loadUser }) => {
           />
           <label className="mt2 fw6" htmlFor="user-name">Pet:</label>
           <input
-            // onChange={e => setPet(e.target.value)}
+            onChange={e => setPet(e.target.value)}
             className="pa2 ba w-100"
             placeholder={pet}
             type="text"
