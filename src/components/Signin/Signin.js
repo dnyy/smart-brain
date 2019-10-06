@@ -19,7 +19,7 @@ class Signin extends React.Component {
     this.setState({signInPassword: event.target.value})
   }
 
-  saveAthTokenInSession = (token) => {
+  saveAuthTokenInSession = (token) => {
     window.sessionStorage.setItem('token', token)
   }
 
@@ -35,7 +35,7 @@ class Signin extends React.Component {
       .then(response => response.json()) 
       .then(data => {
         if (data.userId && data.success === 'true') {
-          this.saveAthTokenInSession(data.token)
+          this.saveAuthTokenInSession(data.token)
           fetch(`http://localhost:3000/profile/${data.userId}`, {
             method: 'get',
             headers: {
